@@ -3,62 +3,70 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
 const { token } = require('./config/config.json');
 
+// Initialize Discord client
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
 client.commands = new Collection();
 
+// Load command folders
 const foldersPath = path.join(__dirname, 'commands');
-const commandFolders = fs.readdirSync(foldersPath);
+const commandFolders = fs.readdirSync(foldersPath, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name);
 
+// Load command files
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
-		const command = require(filePath);
-		if ('data' in command && 'execute' in command) {
-			client.commands.set(command.data.name, command);
-		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+
+		try {
+			const imported = require(filePath);
+			const command = imported?.default ?? imported;
+
+			if (command?.data?.name && typeof command.execute === 'function') {
+				client.commands.set(command.data.name, command);
+			} else {
+				console.warn(`[WARNING] Invalid command format at ${filePath}`);
+			}
+		} catch (err) {
+			console.error(`[ERROR] Failed to load command at ${filePath}:`, err);
 		}
 	}
 }
 
+// Bot ready event
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
+// Slash command handler
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
+
 	const command = interaction.client.commands.get(interaction.commandName);
 
 	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
+		console.error(`No command matching "${interaction.commandName}" found.`);
 		return;
 	}
 
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-		// console.error(error);
-		// if (interaction.replied || interaction.deferred) {
-		// 	await interaction.followUp({ content: 'There was an error while executing this command!', flags: MessageFlags.Ephemeral });
-		// } else {
-		// 	await interaction.reply({ content: 'There was an error while executing this command!', flags: MessageFlags.Ephemeral });
-		// }
-		console.error('Error running command', interaction.commandName, error);
-		await interaction.reply({
-			content: 'There was an error while executing this command!',
-			ephemeral: true,
-		});
+		console.error(`Error executing command "${interaction.commandName}":`, error);
+
+		try {
+			await interaction.reply({
+				content: 'There was an error while executing this command!',
+				ephemeral: true,
+			});
+		} catch (err) {
+			console.error('Failed to send error reply:', err);
+		}
 	}
 });
 
-// When the client is ready, run this code (only once).
-// The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
-// It makes some properties non-nullable.
-// client.once(Events.ClientReady, readyClient => {
-// 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-// });
-
+// Log in to Discord
 client.login(token);
