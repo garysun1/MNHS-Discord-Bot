@@ -1,4 +1,5 @@
 node_modules
-config.json
-google-sheets-api-key.json
-names.json
+/config/config.json
+/config/google-sheets-api-key.json
+/data/names.json
+.DS_Store

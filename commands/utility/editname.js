@@ -3,7 +3,7 @@ import { setRealName } from '../../services/helper.js';
 
 export const data = new SlashCommandBuilder()
   .setName('editname')
-  .setDescription('Register your real‑life name so the bot can find your hours')
+  .setDescription('Register your name so the bot can find your hours')
   .addStringOption(o => o.setName('first').setDescription('First name').setRequired(true))
   .addStringOption(o => o.setName('last').setDescription('Last name').setRequired(true));
 
