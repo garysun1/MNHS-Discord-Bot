@@ -1,6 +1,5 @@
 node_modules
 /config/config.json
 /config/google-sheets-api-key.json
-/data/names.json
 .DS_Store
 .vscode
