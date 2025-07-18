@@ -60,7 +60,7 @@ async function getHours({ first, last }) {
 }
 
 // Persistent name store
-const NAME_MAP_PATH = path.resolve('names.json');
+const NAME_MAP_PATH = path.resolve('data', 'names.json');
 
 async function loadNames() {
   try {
