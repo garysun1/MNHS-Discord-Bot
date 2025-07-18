@@ -59,7 +59,6 @@ async function getHours({ first, last }) {
   return { fall, spring, fallBreakdown, sprBreakdown };
 }
 
-// Persistent name store
 const NAME_MAP_PATH = path.resolve('data', 'names.json');
 
 async function loadNames() {
