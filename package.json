@@ -10,6 +10,7 @@
   "description": "",
   "dependencies": {
     "discord.js": "^14.21.0",
-    "googleapis": "^153.0.0"
+    "googleapis": "^153.0.0",
+    "mathjs": "^14.5.3"
   }
 }
