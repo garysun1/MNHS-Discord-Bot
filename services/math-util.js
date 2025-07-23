@@ -13,18 +13,15 @@ function generateTarget(n) {
 }
 
 function isValidExpression(expr, digits) {
-  const digitCopy = [...digits];
-  const numbers = expr.match(/\d+/g) || [];
+  const freq = {};
+  for (const d of digits) freq[d] = (freq[d] || 0) + 1;
 
-  for (const numStr of numbers) {
-    for (const digitChar of numStr) {
-      const digit = parseInt(digitChar);
-      const idx = digitCopy.indexOf(digit);
-      if (idx === -1) return false;
-      digitCopy.splice(idx, 1);
-    }
+  for (const ch of expr.replace(/[^0-9]/g, '')) {
+    const d = +ch;
+    if (!freq[d]) return false;
+    freq[d]--;
   }
-  return true;
+  return Object.values(freq).every(c => c === 0);
 }
 
 function isCorrectAnswer(expr, digits, target) {
