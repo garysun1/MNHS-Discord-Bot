@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, MessageFlags } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, MessageFlags, ActivityType } = require('discord.js');
 const { token } = require('./config/config.json');
 const gameManager = require('./services/game-manager');
 
@@ -35,6 +35,7 @@ for (const folder of commandFolders) {
 
 client.once(Events.ClientReady, c => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
+  client.user.setActivity('/checkhours', { type: ActivityType.Playing });
 });
 
 client.on(Events.InteractionCreate, async interaction => {
