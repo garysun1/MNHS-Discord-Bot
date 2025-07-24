@@ -29,7 +29,8 @@ module.exports = {
             '`^` Exponentiation\n' +
             '`!` Factorial\n' +
             '`()` Parentheses\n' +
-            '`&`, `|`, `<<`, `>>` Bitwise\n',
+            '`&`, `|`, `<<`, `>>` Bitwise\n' +
+            '...and [more](https://mathjs.org/docs/reference/functions.html)\n',
           inline: true
         },
         {
