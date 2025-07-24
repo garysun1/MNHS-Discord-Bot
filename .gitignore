@@ -1,6 +1,8 @@
+.gitignore
 node_modules
 /config/config.json
 /config/google-sheets-api-key.json
 .DS_Store
 .vscode
 /data/names.json
+evaluator.js
