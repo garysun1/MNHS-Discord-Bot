@@ -54,7 +54,10 @@ module.exports = {
       await interaction.reply({ embeds: [embed] });
       interaction.channel.send('Starting in 5 seconds!');
     } else {
-      await interaction.reply({ content: 'A game is already running in this channel. Use `/stopgame` to end it.', ephemeral: true });
+      await interaction.reply({
+        content: 'A game is already running in this channel. Use `/stopgame` to end it.',
+        flags: MessageFlags.Ephemeral
+      });
     }
   }
 };

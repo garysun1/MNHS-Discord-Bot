@@ -11,7 +11,7 @@ module.exports = {
     if (!mapping) {
       await interaction.reply({
         content: 'I don’t know your name yet! Please run `/editname` first.',
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral
       });
       return;
     }

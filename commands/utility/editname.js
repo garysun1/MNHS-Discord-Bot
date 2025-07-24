@@ -12,5 +12,8 @@ export async function execute(interaction) {
   const last  = interaction.options.getString('last');
 
   await setRealName(interaction.user.id, { first, last });
-  await interaction.reply({ content: `Saved as **${first} ${last}**`, ephemeral: true });
+  await interaction.reply({
+    content: `Saved as **${first} ${last}**`,
+    flags: MessageFlags.Ephemeral
+  });
 }

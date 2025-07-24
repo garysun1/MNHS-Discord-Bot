@@ -52,14 +52,14 @@ client.on(Events.InteractionCreate, async interaction => {
     await command.execute(interaction);
   } catch (error) {
     console.error(`Error executing command "${interaction.commandName}":`, error);
-	try {
-	  await interaction.reply({
-		content: 'There was an error while executing this command!',
-		ephemeral: true,
-	  });
-	} catch (err) {
-	  console.error('Failed to send error reply:', err);
-	}
+    try {
+      await interaction.reply({
+        content: 'There was an error while executing this command!',
+        flags: MessageFlags.Ephemeral
+      });
+    } catch (err) {
+      console.error('Failed to send error reply:', err);
+    }
   }
 });
 

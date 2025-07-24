@@ -13,7 +13,10 @@ module.exports = {
     if (stopped) {
       await interaction.reply('Game has been stopped.');
     } else {
-      await interaction.reply({ content: 'No game is currently running in this channel.', ephemeral: true });
+      await interaction.reply({
+        content: 'No game is currently running in this channel.',
+        flags: MessageFlags.Ephemeral
+      });
     }
   }
 };
